@@ -1,5 +1,6 @@
 ﻿#include "Engine.h"
 #include <iostream>
+#include "Level/Level.h"
 //#include <chrono>
 
 // 2가지
@@ -13,6 +14,7 @@ Engine::Engine()
 
 Engine::~Engine()
 {
+	Free();
 }
 
 void Engine::Run()
@@ -49,13 +51,53 @@ void Engine::Run()
 
 		if (oneFrameTime <= deltaTime)
 		{
-			Update(deltaTime); // deltaTime can be calculated based on frame time
+			BeginPlay();
+			Tick(deltaTime); // deltaTime can be calculated based on frame time
 			Render();
 
 			// 시간 갱신
 			previousTime = currentTime;
+
+			// 현재 프레임의 입력을 기록
+			for (int i = 0; i < MAX_KEY_NUMBER; ++i)
+			{
+				keyStates[i].previousKeyDown = keyStates[i].isKeyDown;
+			}
 		}
 	}
+}
+
+void Engine::AddLevel(Level* newLevel)
+{
+	if (newLevel == nullptr)
+	{
+		return;
+	}
+
+	// 기존에 있던 레벨 제거
+
+	if (mainLevel != nullptr)
+	{
+		delete mainLevel;
+		mainLevel = nullptr;
+	}
+
+	mainLevel = newLevel;
+}
+
+bool Engine::GetKey(int keyCode) const
+{
+	return keyStates[keyCode].isKeyDown;
+}
+
+bool Engine::GetKeyDown(int keyCode) const
+{
+	return !keyStates[keyCode].previousKeyDown && keyStates[keyCode].isKeyDown;
+}
+
+bool Engine::GetKeyUp(int keyCode) const
+{
+	return keyStates[keyCode].previousKeyDown && !keyStates[keyCode].isKeyDown;
 }
 
 void Engine::Quit()
@@ -65,18 +107,68 @@ void Engine::Quit()
 
 void Engine::ProcessInput()
 {
-	// ESC 키 입력 처리	
-	if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+	// 키 입력 확인
+	for (int i = 0; i < MAX_KEY_NUMBER; ++i)
+	{
+		keyStates[i].isKeyDown = GetAsyncKeyState(i) & 0x8000;
+	}
+}
+
+void Engine::BeginPlay()
+{
+	if (mainLevel == nullptr)
+	{
+		return;
+	}
+
+	mainLevel->BeginPlay();
+}
+
+void Engine::Tick(float deltaTime)
+{
+	if (mainLevel == nullptr)
+	{
+		return;
+	}
+
+	//std::cout << "DeltaTime: " << deltaTime << " FPS: " << (1.0f / deltaTime) << '\n';
+	
+	// 알파벳은 소문자는 입력이 안됨. 그냥 대문자로 체크해야 함
+	//if (GetKeyDown('A'))
+	//{
+	//	std::cout << "Key Down\n";
+	//}
+	//if (GetKey('A'))
+	//{
+	//	std::cout << "Key\n";
+	//}
+	//if (GetKeyUp('A'))
+	//{
+	//	std::cout << "Key Up\n";
+	//}
+
+	//레벨 업데이트
+	mainLevel->Tick(deltaTime);
+
+	if (GetKeyDown(VK_ESCAPE))
 	{
 		Quit();
 	}
 }
 
-void Engine::Update(float deltaTime)
-{
-	std::cout << "DeltaTime: " << deltaTime << " FPS: " << (1.0f / deltaTime) << '\n';
-}
-
 void Engine::Render()
 {
+	if (mainLevel == nullptr)
+	{
+		return;
+	}
+}
+
+void Engine::Free()
+{
+	if (mainLevel != nullptr)
+	{
+		delete mainLevel;
+		mainLevel = nullptr;
+	}
 }

@@ -92,6 +92,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>BuildEngineDLL;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions); BuildEngineDLL;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)\; $(ProjectDir)\Core\;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -113,6 +114,7 @@ xcopy $(OutDir)\*.dll ..\Lib\Engine\ /y</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>BuildEngineDLL;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions); BuildEngineDLL;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)\; $(ProjectDir)\Core\;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -132,6 +134,7 @@ xcopy $(OutDir)\*.dll ..\Lib\Engine\ /y</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>BuildEngineDLL;_DEBUG;_CONSOLE;%(PreprocessorDefinitions); BuildEngineDLL;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)\; $(ProjectDir)\Core\;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -153,6 +156,7 @@ xcopy $(OutDir)\*.dll ..\Lib\Engine\ /y</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>BuildEngineDLL;NDEBUG;_CONSOLE;%(PreprocessorDefinitions); BuildEngineDLL;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)\; $(ProjectDir)\Core\;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -167,11 +171,17 @@ xcopy $(OutDir)\*.dll ..\Lib\Engine\ /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Actor\Actor.h" />
     <ClInclude Include="Core\Core.h" />
     <ClInclude Include="Core\Engine.h" />
+    <ClInclude Include="Level\Level.h" />
+    <ClInclude Include="Math\Vector2.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Actor\Actor.cpp" />
     <ClCompile Include="Core\Engine.cpp" />
+    <ClCompile Include="Level\Level.cpp" />
+    <ClCompile Include="Math\Vector2.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
