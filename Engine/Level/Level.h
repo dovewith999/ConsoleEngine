@@ -1,10 +1,12 @@
 ﻿#pragma once
-#include "Core.h"
 #include <vector> // 크기가 알아서 변경되는 동적 배열
+#include "RTTI.h"
 
 class Actor;
-class Engine_API Level
+class Engine_API Level : public RTTI
 {
+	RTTI_DECLARATIONS(Level, RTTI)
+
 public:
 	Level();
 	virtual ~Level();

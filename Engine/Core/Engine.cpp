@@ -1,6 +1,7 @@
 ﻿#include "Engine.h"
 #include <iostream>
 #include "Level/Level.h"
+#include <Windows.h>
 //#include <chrono>
 
 // 2가지
@@ -8,13 +9,33 @@
 // 단순입력처리(키보드)
 // 타이머(시간계산)
 
+Engine* Engine::instance = nullptr;
+
 Engine::Engine()
 {
+	instance = this;
+
+
+	// 콘솔 커서 끄기
+	CONSOLE_CURSOR_INFO curInfo;
+	curInfo.bVisible = false;
+	curInfo.dwSize = 1;
+
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
+	
+	//모든 텍스트 색상 변경
+	//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
+
 }
 
 Engine::~Engine()
 {
 	Free();
+}
+
+Engine& Engine::GetInstance()
+{
+	return *instance;
 }
 
 void Engine::Run()
@@ -65,6 +86,10 @@ void Engine::Run()
 			}
 		}
 	}
+
+	// Engine 정리
+	// 텍스트 색상 원래대로 돌려놓기
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 }
 
 void Engine::AddLevel(Level* newLevel)
@@ -150,10 +175,10 @@ void Engine::Tick(float deltaTime)
 	//레벨 업데이트
 	mainLevel->Tick(deltaTime);
 
-	if (GetKeyDown(VK_ESCAPE))
-	{
-		Quit();
-	}
+	//if (GetKeyDown(VK_ESCAPE))
+	//{
+	//	Quit();
+	//}
 }
 
 void Engine::Render()
@@ -162,6 +187,10 @@ void Engine::Render()
 	{
 		return;
 	}
+
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+
+	mainLevel->Render();
 }
 
 void Engine::Free()

@@ -3,8 +3,10 @@
 
 class TestActor : public Actor
 {
+	RTTI_DECLARATIONS(TestActor, Actor)
+
 public:
-	TestActor() = default;
+	TestActor();
 	virtual ~TestActor() = default;
 
 public:

@@ -3,12 +3,8 @@
 #include <Windows.h>
 
 /*
-* TODO : 2025/07/23 작업 목록
-- 키 입력 관리 (Ksy State 배열) - 완료
-- 입력 확인 함수(GetKey, GetKeyDown, GetKeyUp) - 완료
-- Entity(Actor) 추가
-- 이벤트 함수 추가 (BeginPlay, Tick, Render)
-- Level 추가(가상 공간에 배치된 물체 관리 객체)
+* TODO : 2025/07/25 작업 목록
+- Engine을 Singleton 구현
 */
 const int MAX_KEY_NUMBER = 255;
 
@@ -29,6 +25,9 @@ public:
 	// 생성자, 소멸자
 	Engine();
 	~Engine();
+
+public:
+	static Engine& GetInstance();
 	
 public:
 	// 엔진 실행함수
@@ -58,4 +57,6 @@ private:
 	KeyState keyStates[MAX_KEY_NUMBER] = {}; // 키 입력 정보 관리 컨테이너
 	//메인 레벨
 	Level* mainLevel = nullptr;
+
+	static Engine* instance;
 };
