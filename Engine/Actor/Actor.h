@@ -14,7 +14,7 @@ enum class Color
 	Blue		= 1,
 	Green		= 2,
 	Red			= 4,
-	White		= Red | Green | Blue,
+	White		= Red | Green | Blue, // 7
 	Intensity	= 8,
 };
 
@@ -23,7 +23,7 @@ class Engine_API Actor : public RTTI
 	RTTI_DECLARATIONS(Actor, RTTI)
 
 public:
-	Actor(const char image = ' ', Color color = Color::White);
+	Actor(const char image = ' ', Color color = Color::White, const Vector2& position = Vector2::Zero);
 	virtual ~Actor();
 	
 public:
@@ -44,6 +44,7 @@ public:/*Getter & Setter*/
 private:
 	// 개체의 위치
 	Vector2 position;
+
 	// 그려질 이미지 값
 	char image = ' ';
 

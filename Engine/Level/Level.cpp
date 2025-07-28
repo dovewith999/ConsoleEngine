@@ -7,6 +7,12 @@ Level::Level()
 
 Level::~Level()
 {
+	for (Actor* actor : actors)
+	{
+		SafeDelete(actor);
+	}
+
+	actors.clear();
 }
 
 void Level::AddActor(Actor* newActor)

@@ -17,3 +17,16 @@
 #define FORCEINLINE __forceinline
 #define INTERFACE __interface
 #define PURE = 0
+
+//메모리 정리 함수
+template<typename T>
+void SafeDelete(T*& target)
+{
+	if (target == nullptr)
+	{
+		return;
+	}
+
+	delete target;
+	target = nullptr;
+}

@@ -2,8 +2,8 @@
 #include <Windows.h>
 #include <iostream>
 
-Actor::Actor(const char image, Color color)
-	: image(image), color(color)
+Actor::Actor(const char image, Color color, const Vector2& position)
+	: image(image), color(color), position(position)
 {
 }
 
@@ -43,7 +43,7 @@ void Actor::Render()
 
 void Actor::SetPosition(const Vector2& newPosition)
 {
-#pragma region 꼼수
+#pragma region 더블 버퍼링 작성하기 전 까지 사용할 꼼수
 	static HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
 
 	//커서 포지션 이동

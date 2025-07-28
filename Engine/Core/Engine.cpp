@@ -25,7 +25,6 @@ Engine::Engine()
 	
 	//모든 텍스트 색상 변경
 	//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
-
 }
 
 Engine::~Engine()
