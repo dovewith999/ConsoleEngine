@@ -27,6 +27,11 @@ Vector2 Vector2::operator-(const Vector2& other) const
     return Vector2(x - other.x, y - other.y);
 }
 
+bool Vector2::operator==(const Vector2& other) const
+{
+    return (this->x == other.x) && (this->y == other.y);
+}
+
 const char* Vector2::ToString()
 {
     // 좌표를 문자열로 출력하고 싶음 "(20, 30)"

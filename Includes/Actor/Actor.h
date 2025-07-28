@@ -41,6 +41,10 @@ public:/*Getter & Setter*/
 	FORCEINLINE void SetPosition(const Vector2& newPosition);
 	FORCEINLINE Vector2 GetPosition() const;
 
+	FORCEINLINE void SetSortingOrder(unsigned int sortingOrder);
+	//friend class Level; 로도 해결 가능함. 어떤 클래스에게 예외를 주고 싶은 상황에 이용 가능
+	FORCEINLINE unsigned int GetSortringOrder() const;
+
 private:
 	// 개체의 위치
 	Vector2 position;
@@ -51,6 +55,9 @@ private:
 	// 텍스트 색상 값
 	Color color = Color::White;
 
-	//BeginPlay 호출이 되었는지 확인.
+	// BeginPlay 호출이 되었는지 확인.
 	bool hasBeganPlay = false;
+
+	// 정렬 순서
+	unsigned int sortingOrder = 0;
 };

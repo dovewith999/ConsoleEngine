@@ -55,8 +55,53 @@ void Level::Tick(float deltaTime)
 
 void Level::Render()
 {
+	// 그리기 전에 정렬 순서 기준으로 재배치(정렬)
+	SortActorsBySortingOrder();
+	
+	// Render Pass
 	for (Actor* const actor : actors)
 	{
+		Actor* searchedActor = nullptr;
+
+		// 검사 (같은 위치에 정렬 순서 높은 액터가 있는 지 판단.)
+		for (Actor* const otherActor : actors)
+		{
+			// 같은 액터면 무시.
+			if (actor == otherActor)
+			{
+				continue;
+			}
+
+			if (actor->GetPosition() == otherActor->GetPosition())
+			{
+				if (actor->GetSortringOrder() < otherActor->GetSortringOrder())
+				{
+					searchedActor = otherActor;
+					break;
+				}
+			}
+		}
+		// 드로우 콜
+
+		if (searchedActor != nullptr)
+		{
+			continue;
+		}
 		actor->Render();
+	}
+}
+
+void Level::SortActorsBySortingOrder()
+{
+	// 버블 정렬
+	for (int i = 0; i < static_cast<int>(actors.size()); ++i)
+	{
+		for (int j = 0; j < static_cast<int>(actors.size()) - 1; ++j)
+		{
+			if (actors[j]->GetSortringOrder() > actors[j + 1]->GetSortringOrder())
+			{
+				std::swap(actors[j], actors[j + 1]);
+			}
+		}
 	}
 }
