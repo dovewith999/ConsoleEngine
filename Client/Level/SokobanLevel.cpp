@@ -18,7 +18,10 @@ SokobanLevel::~SokobanLevel()
 
 bool SokobanLevel::CanPlayerMove(const Vector2& position, const Vector2& newPosition)
 {
-	// TODO : 게임 클리어 여부 확인 및 종료 처리
+	if (isGameClear)
+	{
+		return false;
+	}
 
 	// 박스 처리.
 	std::vector<Box*> boxActors;
@@ -77,8 +80,7 @@ bool SokobanLevel::CanPlayerMove(const Vector2& position, const Vector2& newPosi
 				{
 					searchedBox->SetPosition(nextPosition);
 
-					// TODO : 게임 클리어 여부 확인
-
+					isGameClear = CheckGameClear();
 					return true;
 				}
 			}
@@ -109,7 +111,7 @@ void SokobanLevel::ReadMapFile(const char* fileName)
 	sprintf_s(filePath, 256, "../Assets/%s.txt", fileName);
 
 	FILE* file = nullptr;
-	fopen_s(&file, filePath, "rb");
+	fopen_s(&file, filePath, "rt");
 
 	if (file == nullptr)
 	{
@@ -128,10 +130,10 @@ void SokobanLevel::ReadMapFile(const char* fileName)
 	memset(buffer, 0, fileSize + 1);
 	size_t readSize = fread(buffer, sizeof(char), fileSize, file);
 
-	if (readSize != fileSize)
-	{
-		std::cout << "fileSize is not matched with readSize\n";
-	}
+	//if (readSize != fileSize)
+	//{
+	//	std::cout << "fileSize is not matched with readSize\n";
+	//}
 
 	int index = 0;
 	int size = static_cast<int>(readSize);
@@ -148,8 +150,7 @@ void SokobanLevel::ReadMapFile(const char* fileName)
 			position.x = 0;
 			++position.y;
 
-			// TODO : 테스트 코드, 나중에 삭제
-			std::cout << "\n";
+			//std::cout << "\n";
 			continue;
 		}
 
@@ -173,12 +174,12 @@ void SokobanLevel::ReadMapFile(const char* fileName)
 			AddActor(new Box(position));
 			break;
 		case 't':
-			AddActor(new Target(position));;
+			AddActor(new Target(position));
+			++targetScore;
 			break;
 		default:
 			break;
 		}
-
 
 		// x좌표 증가 처리
 		++position.x;
@@ -190,3 +191,39 @@ void SokobanLevel::ReadMapFile(const char* fileName)
 	// 파일 닫기
 	fclose(file);
 }
+
+bool SokobanLevel::CheckGameClear()
+{
+	// 박스가 타겟 위치에 모두 옮겨져있는지 확인
+	int currentScore = 0;
+
+	// 타겟 액터 벡터에 저장
+	std::vector<Target*> targetActors;
+	std::vector<Box*> boxActors;
+	for (Actor* const actor : actors)
+	{
+		if (actor->As<Target>())
+		{
+			targetActors.emplace_back(actor);
+		}
+
+		else if (actor->As<Box>())
+		{
+			boxActors.emplace_back();
+		}
+	}
+	
+	for (Actor* const targetActor : targetActors)
+	{
+		for (Actor* const boxActor : boxActors)
+		{
+			if (targetActor->GetPosition() == boxActor->GetPosition())
+			{
+				++currentScore;
+			}
+		}
+	}
+
+	return currentScore == targetScore;
+}
+ 

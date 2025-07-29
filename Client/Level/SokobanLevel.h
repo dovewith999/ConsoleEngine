@@ -14,4 +14,10 @@ public:
 
 private:
 	void ReadMapFile(const char* fileName);
+	bool CheckGameClear();
+
+private:
+	// 게임 관련 변수들
+	int targetScore = 0;
+	bool isGameClear = false;
 };
