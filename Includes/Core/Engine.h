@@ -20,7 +20,7 @@ public:
 
 	void AddLevel(Level* newLevel);
 
-	void CleanUp();
+	virtual void CleanUp();
 
 	// 엔진 종료함수
 	void Quit();

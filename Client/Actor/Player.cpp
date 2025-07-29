@@ -4,7 +4,7 @@
 #include "Level/Level.h"
 #include "Interface/ICanPlayerMove.h"
 #include "Level/SokobanLevel.h"
-
+#include "Game/Game.h"
 #include <iostream>
 
 Player::Player(const Vector2& position)
@@ -44,7 +44,7 @@ void Player::Tick(float deltaTime)
 	// 입력처리
 	if (Input::GetInstance().GetKeyDown(VK_ESCAPE))
 	{
-		QuitGame();
+		Game::GetInstance().ToggleMenu();
 		return;
 	}
 	// 이동 로직 - 이동하기 전에 이동할 위치로 갈 수 있는지 판단 후 이동.
