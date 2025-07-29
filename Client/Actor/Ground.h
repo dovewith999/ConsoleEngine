@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "Actor/Actor.h"
 
-class Ground : public Actor
+class Ground final : public Actor
 {
 	RTTI_DECLARATIONS(Ground, Actor)
 

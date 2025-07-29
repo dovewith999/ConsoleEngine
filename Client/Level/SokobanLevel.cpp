@@ -1,11 +1,12 @@
-﻿#include "SokobanLevel.h"
-#include <iostream>
+﻿#include <iostream>
+#include "SokobanLevel.h"
 #include "Math/Vector2.h"
 #include "Actor/Player.h"
 #include "Actor/Wall.h"
 #include "Actor/Ground.h"
 #include "Actor/Box.h"
 #include "Actor/Target.h"
+#include "Utils/Utils.h"
 
 SokobanLevel::SokobanLevel()
 {
@@ -14,6 +15,20 @@ SokobanLevel::SokobanLevel()
 
 SokobanLevel::~SokobanLevel()
 {
+}
+
+void SokobanLevel::Render()
+{
+	super::Render();
+
+	if (isGameClear)
+	{
+		Utils::SetConsoleCursorPosition({ 30, 0 });
+		Utils::SetConsoleTextColor(static_cast<WORD>(Color::White));
+
+		std::cout << "Game Clear!\n";
+
+	}
 }
 
 bool SokobanLevel::CanPlayerMove(const Vector2& position, const Vector2& newPosition)

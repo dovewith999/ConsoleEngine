@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "Actor/Actor.h"
-class Target : public Actor
+class Target final : public Actor
 {
 	RTTI_DECLARATIONS(Target, Actor)
 public:
