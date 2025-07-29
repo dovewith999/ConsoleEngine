@@ -9,7 +9,7 @@ class Engine_API Engine
 public:
 	// 생성자, 소멸자
 	Engine();
-	~Engine();
+	virtual ~Engine();
 
 public:
 	static Engine& GetInstance();
@@ -30,9 +30,10 @@ private: /*Function*/
 	void Tick(float deltaTime = 0.0f);
 	void Render();
 
-private:
-	bool isQuit = false; // 엔진 종료 플래그
-
+protected:
+	// 엔진 종료 플래그
+	bool isQuit = false; 
+	
 	//메인 레벨
 	Level* mainLevel = nullptr;
 
