@@ -62,18 +62,36 @@ void Player::Tick(float deltaTime)
 	}
 	if (Input::GetInstance().GetKeyDown(VK_LEFT))
 	{
+		Vector2 currentPosition = GetPosition();
+		if (!canPlayerMoveInterface->CanPlayerMove(currentPosition, Vector2(currentPosition.x - 1, currentPosition.y)))
+		{
+			return;
+		}
+
 		Vector2 position = GetPosition();
 		position.x -= 1;
 		SetPosition(position);
 	}
 	if (Input::GetInstance().GetKeyDown(VK_UP))
 	{
+		Vector2 currentPosition = GetPosition();
+		if (!canPlayerMoveInterface->CanPlayerMove(currentPosition, Vector2(currentPosition.x, currentPosition.y - 1)))
+		{
+			return;
+		}
+
 		Vector2 position = GetPosition();
 		position.y -= 1;
 		SetPosition(position);
 	}
 	if (Input::GetInstance().GetKeyDown(VK_DOWN))
 	{
+		Vector2 currentPosition = GetPosition();
+		if (!canPlayerMoveInterface->CanPlayerMove(currentPosition, Vector2(currentPosition.x, currentPosition.y + 1)))
+		{
+			return;
+		}
+
 		Vector2 position = GetPosition();
 		position.y += 1;
 		SetPosition(position);

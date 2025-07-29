@@ -22,7 +22,8 @@ public:
 private:
 	void SortActorsBySortingOrder();
 
-private:
+protected:
+	// 자식에서는 접근할 수 있어야 하기 때문에 protected
 	std::vector<Actor*> actors;
 };
 

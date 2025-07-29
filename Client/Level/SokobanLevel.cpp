@@ -18,6 +18,87 @@ SokobanLevel::~SokobanLevel()
 
 bool SokobanLevel::CanPlayerMove(const Vector2& position, const Vector2& newPosition)
 {
+	// TODO : 게임 클리어 여부 확인 및 종료 처리
+
+	// 박스 처리.
+	std::vector<Box*> boxActors;
+	for (Actor* const actor : actors)
+	{
+		Box* box = actor->As<Box>();
+		if (box)
+		{
+			boxActors.emplace_back(box);
+		}
+	}
+
+	// 이동하려는 위치에 박스가 있는지 확인.
+	Box* searchedBox = nullptr;
+	for (Box* const boxActor : boxActors)
+	{
+		if (boxActor->GetPosition() == newPosition)
+		{
+			searchedBox = boxActor;
+			break;
+		}
+	}
+	
+	if (searchedBox != nullptr)
+	{
+		// case 1 : 박스를 이동시키려는 위치에 다른 박스가 또 있는지 확인
+		Vector2 direction = newPosition - position;
+		Vector2 nextPosition = searchedBox->GetPosition() + direction;
+
+		for (Box* const otherBox : boxActors)
+		{
+			if (otherBox == searchedBox)
+			{
+				continue;
+			}
+
+			if (otherBox->GetPosition() == nextPosition)
+			{
+				//플레이어 이동 못함
+				return false;
+			}
+		}
+
+		for (Actor* const actor : actors)
+		{
+			// case 2 : 박스는 없지만 벽이 있지 않은지 확인
+			if (actor->GetPosition() == nextPosition)
+			{
+				if (actor->As<Wall>())
+				{
+					return false;
+				}
+
+				// case 3 : 이동 가능한 경우(그라운드, 타겟)에는 박스 이동 처리
+				else if (actor->As<Ground>() || actor->As<Target>())
+				{
+					searchedBox->SetPosition(nextPosition);
+
+					// TODO : 게임 클리어 여부 확인
+
+					return true;
+				}
+			}
+		}
+	}
+
+	// 플레이어가 이동하려는 위치에 박스가 없는 경우
+	for (Actor* const actor : actors)
+	{
+		if (actor->GetPosition() == newPosition)
+		{
+			if (actor->As<Wall>())
+			{
+				return false;
+			}
+
+			return true;
+		}
+	}
+	// ???
 	return false;
 }
 
