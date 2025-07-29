@@ -198,8 +198,8 @@ bool SokobanLevel::CheckGameClear()
 	int currentScore = 0;
 
 	// 타겟 액터 벡터에 저장
-	std::vector<Target*> targetActors;
-	std::vector<Box*> boxActors;
+	std::vector<Actor*> targetActors;
+	std::vector<Actor*> boxActors;
 	for (Actor* const actor : actors)
 	{
 		if (actor->As<Target>())
@@ -209,7 +209,7 @@ bool SokobanLevel::CheckGameClear()
 
 		else if (actor->As<Box>())
 		{
-			boxActors.emplace_back();
+			boxActors.emplace_back(actor);
 		}
 	}
 	
