@@ -21,6 +21,8 @@ void Level::AddActor(Actor* newActor)
 	{
 		return;
 	}
+	//오너쉽 설정
+	newActor->SetOwner(this);
 
 	//배열 맨 뒤에 새로운 항목을 추가하는 함수
 	// emplace는 이동 - move 시멘틱

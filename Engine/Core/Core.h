@@ -15,7 +15,7 @@
 #endif
 
 #define FORCEINLINE __forceinline
-#define INTERFACE __interface
+#define Interfece __interface
 #define PURE = 0
 
 //메모리 정리 함수

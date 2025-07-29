@@ -1,4 +1,7 @@
 ﻿#include "Actor.h"
+#include "Engine.h"
+#include "Utils/Utils.h"
+#include "Level/Level.h"
 #include <Windows.h>
 #include <iostream>
 
@@ -25,33 +28,40 @@ void Actor::Render()
 	// Win32 API.
 	// 커서 위치 이동
 
-	//콘솔 출력 제어를 위한 핸들 가져오기
-	static HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+	//콘솔 출력 제어를 위한 핸들 가져오기 -> Utils 함수에 자체 제작
+	//static HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
 
 	//커서 포지션 이동
 	COORD coord;
 	coord.X = static_cast<short>(position.x);
 	coord.Y = static_cast<short>(position.y);
 
-	SetConsoleCursorPosition(handle, coord);
+	Utils::SetConsoleCursorPosition(coord);
 	
-	SetConsoleTextAttribute(handle, static_cast<WORD>(color));
+	// 색상 설정
+	Utils::SetConsoleTextColor(static_cast<WORD>(color));
 
 	//그리기
 	std::cout << image;
 }
 
+void Actor::QuitGame() const
+{
+	Engine::GetInstance().Quit();
+}
+
 void Actor::SetPosition(const Vector2& newPosition)
 {
 #pragma region 더블 버퍼링 작성하기 전 까지 사용할 꼼수
-	static HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+	//static HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
 
 	//커서 포지션 이동
 	COORD coord;
 	coord.X = static_cast<short>(position.x);
 	coord.Y = static_cast<short>(position.y);
 
-	SetConsoleCursorPosition(handle, coord);
+	Utils::SetConsoleCursorPosition(coord);
+
 	std::cout << ' ';
 #pragma endregion
 
@@ -71,4 +81,14 @@ void Actor::SetSortingOrder(unsigned int sortingOrder)
 unsigned int Actor::GetSortringOrder() const
 {
 	return sortingOrder;
+}
+
+void Actor::SetOwner(Level* newOwner)
+{
+	owner = newOwner;
+}
+
+Level* Actor::GetOwner() const
+{
+	return owner;
 }

@@ -18,6 +18,7 @@ enum class Color
 	Intensity	= 8,
 };
 
+class Level;
 class Engine_API Actor : public RTTI
 {
 	RTTI_DECLARATIONS(Actor, RTTI)
@@ -37,6 +38,8 @@ public:
 
 	FORCEINLINE const bool HasBeganPlay() const { return hasBeganPlay; }
 
+	void QuitGame() const;
+
 public:/*Getter & Setter*/
 	FORCEINLINE void SetPosition(const Vector2& newPosition);
 	FORCEINLINE Vector2 GetPosition() const;
@@ -44,6 +47,9 @@ public:/*Getter & Setter*/
 	FORCEINLINE void SetSortingOrder(unsigned int sortingOrder);
 	//friend class Level; 로도 해결 가능함. 어떤 클래스에게 예외를 주고 싶은 상황에 이용 가능
 	FORCEINLINE unsigned int GetSortringOrder() const;
+
+	FORCEINLINE void SetOwner(Level* newOwner);
+	FORCEINLINE Level* GetOwner() const;
 
 private:
 	// 개체의 위치
@@ -60,4 +66,7 @@ private:
 
 	// 정렬 순서
 	unsigned int sortingOrder = 0;
+
+	//소유 레벨.(OwnerShip)
+	Level* owner = nullptr;
 };

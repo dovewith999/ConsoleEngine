@@ -2,19 +2,31 @@
 #include <iostream>
 #include "Level/Level.h"
 #include <Windows.h>
-//#include <chrono>
-
-// 2가지
-// 윈도우즈.
-// 단순입력처리(키보드)
-// 타이머(시간계산)
+#include "Utils/Utils.h"
+#include "Input.h"
 
 Engine* Engine::instance = nullptr;
+
+BOOL WINAPI ConsoleMessageProcedure(DWORD CtrlType)
+{
+	switch (CtrlType)
+	{
+	case CTRL_CLOSE_EVENT:
+		// Engine의 메모리 해제.
+		// TODO : Engine의 메모리 해제 함수 추가 후 호출
+		Engine::GetInstance().CleanUp();
+		return false;
+		break;
+	default:
+		break;
+	}
+
+	return false;;
+}
 
 Engine::Engine()
 {
 	instance = this;
-
 
 	// 콘솔 커서 끄기
 	CONSOLE_CURSOR_INFO curInfo;
@@ -22,14 +34,14 @@ Engine::Engine()
 	curInfo.dwSize = 1;
 
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
-	
-	//모든 텍스트 색상 변경
-	//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
+
+	// 콘솔 창 이벤트 등록
+	SetConsoleCtrlHandler(ConsoleMessageProcedure, TRUE);
 }
 
 Engine::~Engine()
 {
-	Free();
+	CleanUp();
 }
 
 Engine& Engine::GetInstance()
@@ -67,7 +79,7 @@ void Engine::Run()
 		// 프레임 시간
 		float deltaTime = (currentTime.QuadPart - previousTime.QuadPart) / static_cast<float>(frequency.QuadPart);
 
-		ProcessInput();
+		input.ProcessInput();
 
 		if (oneFrameTime <= deltaTime)
 		{
@@ -78,17 +90,13 @@ void Engine::Run()
 			// 시간 갱신
 			previousTime = currentTime;
 
-			// 현재 프레임의 입력을 기록
-			for (int i = 0; i < MAX_KEY_NUMBER; ++i)
-			{
-				keyStates[i].previousKeyDown = keyStates[i].isKeyDown;
-			}
+			input.SavePreviouseKeyStates();
 		}
 	}
 
 	// Engine 정리
 	// 텍스트 색상 원래대로 돌려놓기
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+	Utils::SetConsoleTextColor(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED); // 흰 색으로 설정
 }
 
 void Engine::AddLevel(Level* newLevel)
@@ -109,33 +117,9 @@ void Engine::AddLevel(Level* newLevel)
 	mainLevel = newLevel;
 }
 
-bool Engine::GetKey(int keyCode) const
-{
-	return keyStates[keyCode].isKeyDown;
-}
-
-bool Engine::GetKeyDown(int keyCode) const
-{
-	return !keyStates[keyCode].previousKeyDown && keyStates[keyCode].isKeyDown;
-}
-
-bool Engine::GetKeyUp(int keyCode) const
-{
-	return keyStates[keyCode].previousKeyDown && !keyStates[keyCode].isKeyDown;
-}
-
 void Engine::Quit()
 {
 	isQuit = true;
-}
-
-void Engine::ProcessInput()
-{
-	// 키 입력 확인
-	for (int i = 0; i < MAX_KEY_NUMBER; ++i)
-	{
-		keyStates[i].isKeyDown = GetAsyncKeyState(i) & 0x8000;
-	}
 }
 
 void Engine::BeginPlay()
@@ -187,16 +171,12 @@ void Engine::Render()
 		return;
 	}
 
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+	Utils::SetConsoleTextColor(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 
 	mainLevel->Render();
 }
 
-void Engine::Free()
+void Engine::CleanUp()
 {
-	if (mainLevel != nullptr)
-	{
-		delete mainLevel;
-		mainLevel = nullptr;
-	}
+	SafeDelete(mainLevel);
 }
