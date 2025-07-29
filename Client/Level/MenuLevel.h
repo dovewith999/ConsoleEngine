@@ -34,7 +34,7 @@ public:
 
 class MenuLevel : public Level
 {
-	RTTI_DECLARATIONS(MenuLevel, Level);
+	RTTI_DECLARATIONS(MenuLevel, Level)
 
 public:
 	MenuLevel();

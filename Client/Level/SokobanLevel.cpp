@@ -10,7 +10,7 @@
 
 SokobanLevel::SokobanLevel()
 {
-	ReadMapFile("Map");
+	ReadMapFile("Stage1");
 }
 
 SokobanLevel::~SokobanLevel()
@@ -141,7 +141,7 @@ void SokobanLevel::ReadMapFile(const char* fileName)
 	rewind(file);
 
 	char* buffer = new char[fileSize + 1];
-	buffer[fileSize] = '\8';
+	buffer[fileSize] = '\0';
 	memset(buffer, 0, fileSize + 1);
 	size_t readSize = fread(buffer, sizeof(char), fileSize, file);
 
@@ -173,6 +173,7 @@ void SokobanLevel::ReadMapFile(const char* fileName)
 		switch (mapCharacter)
 		{
 		case '#':
+		case '1':
 			AddActor(new Wall(position));
 			break;
 		case '.':

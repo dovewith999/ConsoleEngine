@@ -101,7 +101,8 @@
       <AdditionalLibraryDirectories>..\Lib\Engine\;</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy ..\Lib\Engine\Engine.dll $(OutDir)\ /y</Command>
+      <Command>xcopy ..\Lib\Engine\Engine.dll $(OutDir)\ /y
+xcopy $(SolutionDir)\Assets $(OutDir)..\Assets\ /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -121,7 +122,8 @@
       <AdditionalLibraryDirectories>..\Lib\Engine\;</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy ..\Lib\Engine\Engine.dll $(OutDir)\ /y</Command>
+      <Command>xcopy ..\Lib\Engine\Engine.dll $(OutDir)\ /y
+xcopy $(SolutionDir)\Assets $(OutDir)..\Assets\ /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -139,7 +141,8 @@
       <AdditionalLibraryDirectories>..\Lib\Engine\;</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy ..\Lib\Engine\Engine.dll $(OutDir)\ /y</Command>
+      <Command>xcopy ..\Lib\Engine\Engine.dll $(OutDir)\ /y
+xcopy $(SolutionDir)\Assets $(OutDir)..\Assets\ /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -159,7 +162,8 @@
       <AdditionalLibraryDirectories>..\Lib\Engine\;</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy ..\Lib\Engine\Engine.dll $(OutDir)\ /y</Command>
+      <Command>xcopy ..\Lib\Engine\Engine.dll $(OutDir)\ /y
+xcopy $(SolutionDir)\Assets $(OutDir)..\Assets\ /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
